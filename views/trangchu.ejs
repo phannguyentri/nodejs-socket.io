@@ -2,13 +2,67 @@
 <head>
     <title>Socket IO</title>
     <script src="jquery-3.3.1.min.js"></script>
+    <script src="socket.io/socket.io.js"></script>
 </head>
+<style>
+    body {
+        background-image: linear-gradient(to right, #ee0979 0%, #ff6a00 51%, #ee0979 100%)
+    }
+    h1 {
+        text-align: center;
+        color: beige;
+    }
+    a.btn-grad {
+        width: 7%;
+        height: 1%;
+        margin: 10px;
+        padding: 30px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;
+        box-shadow: 0 0 20px #eee;
+        border-radius: 10px;
+        display: block;
+    }
+    a.btn-grad:hover {
+        background-position: right center;
+    }
+    #yellow{
+        background-image: linear-gradient(to right, #F7971E 0%, #FFD200 51%, #F7971E 100%);
+    }
+    #green{
+        background-image: linear-gradient(to right, #DCE35B 0%, #45B649 51%, #DCE35B 100%);
+    }
+    #red{
+        background-image: linear-gradient(to right, #ee0979 0%, #ff6a00 51%, #ee0979 100%)
+    }
+</style>
 <body>
     <h1>Socket IO</h1>
+
+    <a id="yellow" class="btn-grad" ></a>
+    <a id="green" class="btn-grad" ></a>
+    <a id="red" class="btn-grad" ></a>
     <script>
-        $(document).ready(function () {
-            alert('a');
-        });    
+        var socket = io("http://localhost:3000");
+
+        socket.on('server-send-color', function(data){
+            $('body').css("background-image", data);
+        });
+
+        socket.on('disconnect', function(data){
+            alert('User ID' + data + ' was logout!');
+        });
+
+        $(document).ready(function(){
+            $('.btn-grad').click(function(e){
+                let css = $(this).css('background-image');
+                socket.emit('client-send-color', css);
+                e.preventDefault();
+            });
+        });
     </script>
 </body>
 </html>

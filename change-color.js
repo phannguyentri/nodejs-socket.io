@@ -12,13 +12,11 @@ io.on("connection", function(socket){
 
     socket.on("disconnect", function(){
         console.log(socket.id + " vua ngat ket noi");
+        io.sockets.emit('disconnect', socket.id);
     });
 
-    socket.on('Client-send-data', function(data){
-        console.log(data.message);
-        io.sockets.emit("Server-send-data", 'RETURN MESSAGE');
-        // socket.emit("Server-send-data", "RETURN EMIT");
-        // socket.broadcast.emit("Server-send-data", "RETURN BROADCAST");
+    socket.on('client-send-color', function(data){
+        io.sockets.emit('server-send-color', data);
     });
 
 });
